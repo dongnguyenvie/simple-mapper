@@ -15,6 +15,7 @@ export class DevService {
       @Exclude()
       lastName = 'default last';
 
+      @Exclude()
       public fullName() {
         return this.firstName + ' ' + this.lastName;
       }
