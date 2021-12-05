@@ -1,0 +1,85 @@
+{
+  "version": 2,
+  "projects": {
+    "core": {
+      "root": "packages/core",
+      "sourceRoot": "packages/core/src",
+      "projectType": "library",
+      "generators": {},
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:package",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/packages/core",
+            "packageJson": "packages/core/package.json",
+            "tsConfig": "packages/core/tsconfig.json",
+            "main": "packages/core/src/index.ts",
+            "assets": ["packages/myapp/src/assets"]
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "core:build",
+            "port": 4200
+          }
+        }
+      },
+      "tags": [],
+      "implicitDependencies": []
+    },
+    "nestjs-dev": {
+      "root": "packages/nestjs-dev",
+      "sourceRoot": "packages/nestjs-dev/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/packages/nestjs-dev",
+            "main": "packages/nestjs-dev/src/main.ts",
+            "tsConfig": "packages/nestjs-dev/tsconfig.app.json",
+            "assets": ["packages/nestjs-dev/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "packages/nestjs-dev/src/environments/environment.ts",
+                  "with": "packages/nestjs-dev/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "nestjs-dev:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["packages/nestjs-dev/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/packages/nestjs-dev"],
+          "options": {
+            "jestConfig": "packages/nestjs-dev/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    }
+  }
+}
